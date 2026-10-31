@@ -1,0 +1,126 @@
+:root {
+  /* Colors */
+  --color-ink: #112A3A;
+  --color-paper: #F6F9FA;
+  --color-care: #0B6E6E;
+  --color-verified: #1F7A3F;
+  --color-caution: #B35C00;
+  --color-danger: #B3261E;
+  --color-surface: #FFFFFF;
+  --color-quiet: #5B6B77;
+  --color-line-strong: #6F8190;
+  --color-line-soft: #D5DEE3;
+
+  /* Tints */
+  --color-care-tint: #DDEFEF;
+  --color-verified-tint: #E1F2E6;
+  --color-caution-tint: #FBEBD6;
+  --color-danger-tint: #F9E1DF;
+
+  /* Typography */
+  --font-latin: 'Atkinson Hyperlegible', sans-serif;
+  --font-telugu: 'Noto Sans Telugu', sans-serif;
+
+  /* Spacing */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+
+  /* Radius */
+  --radius-field: 8px;
+  --radius-panel: 16px;
+  --radius-action: 28px;
+  --radius-pill: 9999px;
+
+  /* Targets */
+  --target-min: 56px;
+  --target-primary: 72px;
+
+  /* Motion */
+  --motion-quick: 120ms ease-out;
+  --motion-base: 200ms ease-out;
+
+  /* Font Scale Multiplier (Default 1.0, previewable up to 2.0 per 07-accessibility.md) */
+  --font-scale: 1;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-latin);
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  font-size: calc(20px * var(--font-scale));
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Telugu typography accommodations */
+.lang-te {
+  font-family: var(--font-telugu);
+  line-height: 1.65;
+}
+
+/* Accessibility Focus Ring (3dp care ring + 2dp offset, visible on all backdrops) */
+:focus-visible {
+  outline: 3px solid var(--color-care);
+  outline-offset: 2px;
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Common button resets */
+button {
+  font-family: inherit;
+  border: none;
+  cursor: pointer;
+  background: none;
+  touch-action: manipulation;
+}
+
+/* Typography Utility Classes */
+.type-display {
+  font-size: calc(36px * var(--font-scale));
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.type-title {
+  font-size: calc(28px * var(--font-scale));
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.type-body-lg {
+  font-size: calc(22px * var(--font-scale));
+  font-weight: 500;
+  line-height: 1.45;
+}
+
+.type-body {
+  font-size: calc(20px * var(--font-scale));
+  font-weight: 400;
+  line-height: 1.45;
+}
+
+.type-label {
+  font-size: calc(18px * var(--font-scale));
+  font-weight: 600;
+  line-height: 1.3;
+}
