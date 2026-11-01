@@ -19,6 +19,7 @@ import { S11_MedicineDetail } from './screens/S11_MedicineDetail';
 import { S13_GuardianSetup } from './screens/S13_GuardianSetup';
 import { S14_SettingsHealthCheck } from './screens/S14_SettingsHealthCheck';
 import { P01_ReviewQueue } from './portal/P01_ReviewQueue';
+import { P02_PrescriptionReview } from './portal/P02_PrescriptionReview';
 import { P03_TranslationReview } from './portal/P03_TranslationReview';
 import { P04_ContentRegistry } from './portal/P04_ContentRegistry';
 import { P05_AuditLog } from './portal/P05_AuditLog';
@@ -44,6 +45,13 @@ import {
   CheckCircle,
   HelpCircle,
   X,
+  Globe,
+  Home,
+  Camera,
+  PlusCircle,
+  History,
+  Shield,
+  Settings,
 } from 'lucide-react';
 import { SyncService } from './services/syncService';
 
@@ -61,6 +69,7 @@ type ActiveView =
   | 'patient_guardian'
   | 'patient_settings'
   | 'portal_queue'
+  | 'portal_review_rx'
   | 'portal_review_trans'
   | 'portal_registry'
   | 'portal_audit';
@@ -296,8 +305,86 @@ export const App: React.FC = () => {
           </div>
         </div>
 
-        {/* Right Tools: Offline Toggle, Flagship Demo Guide, Sync */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+        {/* Right Tools: Language Switcher, Test Alarm, Offline Toggle, Flagship Demo Guide, Sync */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          {/* Quick Language Switcher (EN / తెలుగు) */}
+          <div
+            style={{
+              backgroundColor: 'rgba(255,255,255,0.15)',
+              borderRadius: 'var(--radius-pill)',
+              padding: '2px',
+              display: 'flex',
+              alignItems: 'center',
+              border: '1px solid rgba(255,255,255,0.2)',
+            }}
+          >
+            <div style={{ padding: '0 6px 0 8px', display: 'flex', alignItems: 'center', color: '#93C5FD' }}>
+              <Globe size={14} />
+            </div>
+            <button
+              onClick={() => localDb.updateSettings({ locale: 'en' })}
+              title="Switch language to English (Default)"
+              style={{
+                padding: '4px 10px',
+                borderRadius: 'var(--radius-pill)',
+                backgroundColor: dbState.settings.locale === 'en' ? 'var(--color-care)' : 'transparent',
+                color: '#FFFFFF',
+                border: 'none',
+                fontWeight: dbState.settings.locale === 'en' ? 700 : 500,
+                fontSize: '13px',
+                cursor: 'pointer',
+                transition: 'background var(--motion-quick)',
+              }}
+            >
+              English
+            </button>
+            <button
+              onClick={() => localDb.updateSettings({ locale: 'te' })}
+              title="భాషను తెలుగులోకి మార్చండి (Switch language to Telugu)"
+              style={{
+                padding: '4px 10px',
+                borderRadius: 'var(--radius-pill)',
+                backgroundColor: dbState.settings.locale === 'te' ? 'var(--color-care)' : 'transparent',
+                color: '#FFFFFF',
+                border: 'none',
+                fontWeight: dbState.settings.locale === 'te' ? 700 : 500,
+                fontSize: '13px',
+                cursor: 'pointer',
+                transition: 'background var(--motion-quick)',
+              }}
+            >
+              తెలుగు
+            </button>
+          </div>
+
+          {/* Quick "Test Alarm" Trigger */}
+          <button
+            onClick={() => {
+              if (dbState.doseEvents.length > 0) {
+                setActiveAlarmDose(dbState.doseEvents[0]);
+              } else {
+                alert('No dose events found. Add a medicine or scan a prescription to test alarms!');
+              }
+            }}
+            title="Test Alarm Experience (S9 Full Screen Alert)"
+            style={{
+              padding: '6px 12px',
+              borderRadius: 'var(--radius-pill)',
+              backgroundColor: 'rgba(239, 68, 68, 0.25)',
+              border: '1.5px solid #EF4444',
+              color: '#FCA5A5',
+              fontWeight: 700,
+              fontSize: '13px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              cursor: 'pointer',
+            }}
+          >
+            <Bell size={15} />
+            <span>Test Alarm</span>
+          </button>
+
           {/* Offline Airplane Mode Simulator Toggle */}
           <button
             onClick={() => localDb.updateSettings({ offlineMode: !dbState.settings.offlineMode })}
@@ -527,6 +614,69 @@ export const App: React.FC = () => {
                 }}
               />
             )}
+
+            {/* Accessible Senior Bottom Navigation Dock */}
+            <nav
+              aria-label="Primary Mobile Navigation"
+              style={{
+                position: 'sticky',
+                bottom: 0,
+                backgroundColor: 'var(--color-surface)',
+                borderTop: '2px solid var(--color-line-soft)',
+                display: 'flex',
+                justifyContent: 'space-around',
+                alignItems: 'center',
+                padding: '6px 4px',
+                zIndex: 100,
+                boxShadow: '0 -4px 16px rgba(0,0,0,0.06)',
+              }}
+            >
+              {[
+                { id: 'patient_home', icon: Home, labelEn: 'Home', labelTe: 'హోమ్' },
+                { id: 'patient_scan_rx', icon: Camera, labelEn: 'Scan Rx', labelTe: 'స్కాన్' },
+                { id: 'patient_manual', icon: PlusCircle, labelEn: 'Add Med', labelTe: 'జోడించు' },
+                { id: 'patient_history', icon: History, labelEn: 'History', labelTe: 'చరిత్ర' },
+                { id: 'patient_detail', icon: Shield, labelEn: 'Passports', labelTe: 'వివరాలు' },
+                { id: 'patient_settings', icon: Settings, labelEn: 'Settings', labelTe: 'సెట్టింగ్స్' },
+              ].map((item) => {
+                const Icon = item.icon;
+                const isActive = activeView === item.id;
+                const isTe = dbState.settings.locale === 'te';
+                return (
+                  <button
+                    key={item.id}
+                    onClick={() => {
+                      if (item.id === 'patient_detail' && !selectedMedicine && dbState.medicines.length > 0) {
+                        setSelectedMedicine(dbState.medicines[0]);
+                      }
+                      setActiveView(item.id as ActiveView);
+                    }}
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '4px',
+                      background: 'none',
+                      border: 'none',
+                      color: isActive ? 'var(--color-care)' : 'var(--color-quiet)',
+                      padding: '6px 8px',
+                      minWidth: '56px',
+                      minHeight: '52px',
+                      borderRadius: 'var(--radius-field)',
+                      cursor: 'pointer',
+                      transition: 'all var(--motion-quick)',
+                      backgroundColor: isActive ? 'var(--color-care-tint)' : 'transparent',
+                    }}
+                  >
+                    <Icon size={20} strokeWidth={isActive ? 2.5 : 2} />
+                    <span style={{ fontSize: '11px', fontWeight: isActive ? 700 : 500 }}>
+                      {isTe ? item.labelTe : item.labelEn}
+                    </span>
+                  </button>
+                );
+              })}
+            </nav>
           </div>
         ) : (
           /* Pharmacist Portal Views (Part 2) */
@@ -569,7 +719,21 @@ export const App: React.FC = () => {
               <P01_ReviewQueue
                 onSelectRequest={(req) => {
                   setSelectedReviewRequest(req);
-                  setActiveView('portal_review_trans');
+                  if (req.type === 'prescription') {
+                    setActiveView('portal_review_rx');
+                  } else {
+                    setActiveView('portal_review_trans');
+                  }
+                }}
+              />
+            )}
+
+            {activeView === 'portal_review_rx' && selectedReviewRequest && (
+              <P02_PrescriptionReview
+                request={selectedReviewRequest}
+                onBack={() => setActiveView('portal_queue')}
+                onReviewed={() => {
+                  setActiveView('portal_queue');
                 }}
               />
             )}

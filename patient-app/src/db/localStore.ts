@@ -57,9 +57,11 @@ class LocalDatabase {
 
   private loadState(): LocalDatabaseState {
     try {
-      const data = localStorage.getItem(STORAGE_KEY);
-      if (data) {
-        return JSON.parse(data);
+      if (typeof localStorage !== 'undefined') {
+        const data = localStorage.getItem(STORAGE_KEY);
+        if (data) {
+          return JSON.parse(data);
+        }
       }
     } catch (e) {
       console.warn('Failed to load local DB, initializing fresh:', e);
@@ -90,7 +92,7 @@ class LocalDatabase {
       escalations: [],
       syncQueue: [],
       settings: {
-        locale: 'te', // Telugu first per project brief
+        locale: 'en', // Default language English per user request, instant toggle to Telugu
         voiceEnabled: true,
         fontScale: 1.0,
         offlineMode: false,
@@ -104,11 +106,19 @@ class LocalDatabase {
 
   private saveState() {
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(this.state));
+      if (typeof localStorage !== 'undefined') {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(this.state));
+      }
       this.notify();
     } catch (e) {
       console.error('Failed to save state to localStorage:', e);
     }
+  }
+
+  public resetToDefaults() {
+    this.state = this.getInitialState();
+    this.seedDefaultData();
+    this.saveState();
   }
 
   public subscribe(listener: () => void): () => void {
@@ -131,6 +141,13 @@ class LocalDatabase {
   public async seedDefaultData() {
     const now = Date.now();
     const today = new Date().toISOString().split('T')[0];
+
+    this.state.contentItems = [];
+    this.state.medicines = [];
+    this.state.schedules = [];
+    this.state.doseEvents = [];
+    this.state.expiryRecords = [];
+    this.state.escalations = [];
 
     // Seed Content Items (Templates)
     for (const tpl of instructionTemplates) {

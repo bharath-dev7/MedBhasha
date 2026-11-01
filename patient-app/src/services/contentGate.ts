@@ -5,7 +5,7 @@
 
 import { VerificationStatus } from '../../../shared/contracts';
 import { localDb } from '../db/localStore';
-import { uxCopyEn, uxCopyTe, slotTeluguWords } from '../../../shared/ux-copy';
+import { uxCopyEn, uxCopyTe, slotTeluguWords, instructionTemplates } from '../../../shared/ux-copy';
 
 export interface ResolvedContent {
   key: string;
@@ -27,7 +27,8 @@ export class ContentGate {
     const item = dbState.contentItems.find((i) => i.key === key && i.locale === locale);
 
     // English source is always verified baseline
-    const enText = uxCopyEn[key] || key;
+    const templateDef = instructionTemplates.find((t) => t.key === key);
+    const enText = uxCopyEn[key] || templateDef?.sourceEn || key;
 
     // Fail-safe S10: if item not found, status is 'unverified'
     if (!item) {
