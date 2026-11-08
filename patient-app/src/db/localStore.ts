@@ -16,7 +16,37 @@ import {
   Schedule,
   SyncQueueItem,
 } from '../../../shared/contracts';
-import { instructionTemplates } from '../../../shared/ux-copy';
+import { instructionTemplates, SupportedLocale } from '../../../shared/ux-copy';
+
+export interface CurrentUser {
+  fullName: string;
+  mobile: string;
+  email: string;
+  isLoggedIn: boolean;
+}
+
+export interface FeedbackEntry {
+  id: string;
+  rating: number;
+  message: string;
+  date: number;
+}
+
+export interface PaymentEntry {
+  id: string;
+  medicineId: string;
+  amount: number;
+  status: 'paid' | 'pending';
+  date: number;
+}
+
+export interface DonationEntry {
+  id: string;
+  medicineName: string;
+  quantity: string;
+  centre: string;
+  date: number;
+}
 import { computeItemContentSha256, sha256Hex } from '../../../shared/crypto-bundle';
 
 export interface LocalDatabaseState {
@@ -30,8 +60,12 @@ export interface LocalDatabaseState {
   guardians: Guardian[];
   escalations: Escalation[];
   syncQueue: SyncQueueItem[];
+  currentUser?: CurrentUser;
+  feedbackList?: FeedbackEntry[];
+  paymentHistory?: PaymentEntry[];
+  donations?: DonationEntry[];
   settings: {
-    locale: 'en' | 'te';
+    locale: SupportedLocale;
     voiceEnabled: boolean;
     fontScale: number; // 1.0 to 2.0
     offlineMode: boolean; // Simulator toggle
@@ -456,6 +490,54 @@ class LocalDatabase {
       }
     }
     this.state.settings.installedBundleVersion = bundleVersion;
+    this.saveState();
+  }
+
+  public setCurrentUser(user: CurrentUser) {
+    this.state.currentUser = user;
+    this.saveState();
+  }
+
+  public addFeedback(rating: number, message: string) {
+    if (!this.state.feedbackList) this.state.feedbackList = [];
+    this.state.feedbackList.push({
+      id: 'fb_' + Date.now(),
+      rating,
+      message,
+      date: Date.now(),
+    });
+    this.saveState();
+  }
+
+  public recordPayment(medicineId: string, amount: number = 1) {
+    if (!this.state.paymentHistory) this.state.paymentHistory = [];
+    this.state.paymentHistory.push({
+      id: 'pay_' + Date.now(),
+      medicineId,
+      amount,
+      status: 'paid',
+      date: Date.now(),
+    });
+    this.saveState();
+  }
+
+  public addDonation(medicineName: string, quantity: string, centre: string) {
+    if (!this.state.donations) this.state.donations = [];
+    this.state.donations.push({
+      id: 'don_' + Date.now(),
+      medicineName,
+      quantity,
+      centre,
+      date: Date.now(),
+    });
+    this.saveState();
+  }
+
+  public deleteMedicine(medicineId: string) {
+    this.state.medicines = this.state.medicines.filter((m) => m.id !== medicineId);
+    this.state.schedules = this.state.schedules.filter((s) => s.medicine_id !== medicineId);
+    this.state.doseEvents = this.state.doseEvents.filter((d) => d.schedule_id !== medicineId);
+    this.state.expiryRecords = this.state.expiryRecords.filter((e) => e.medicine_id !== medicineId);
     this.saveState();
   }
 }

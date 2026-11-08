@@ -199,3 +199,6 @@ export const sampleStrips: SampleStripScenario[] = [
     notes: 'Foil torn across expiry line. Strictly enforces S3: unknown stays unknown, never inferred.',
   },
 ];
+
+export const sampleScenarios = samplePrescriptions;
+export const sampleStripScenarios = sampleStrips;
