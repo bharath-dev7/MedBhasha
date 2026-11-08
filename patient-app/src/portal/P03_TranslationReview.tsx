@@ -34,6 +34,7 @@ export const P03_TranslationReview: React.FC<P03TranslationReviewProps> = ({
   const [approvedSuccess, setApprovedSuccess] = useState(false);
   const [reviewerName, setReviewerName] = useState('Dr. Ananya Reddy, PharmD');
   const [regNo, setRegNo] = useState('APPC/77218');
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const enSource = request.data.source_english || 'Take {qty} {form} after food.';
   const teProposed = request.data.proposed_translation || 'భోజనం తర్వాత {qty} {form} తీసుకోండి.';
@@ -48,6 +49,7 @@ export const P03_TranslationReview: React.FC<P03TranslationReviewProps> = ({
 
   const handleApprove = async () => {
     setIsApproving(true);
+    setErrorMessage(null);
     try {
       const res = await fetch(`/portal/items/${request.id}/approve`, {
         method: 'POST',
@@ -66,12 +68,10 @@ export const P03_TranslationReview: React.FC<P03TranslationReviewProps> = ({
           onApproved();
         }, 1500);
       } else {
-        alert('Approval failed on server');
+        throw new Error(`Approval failed (${res.status})`);
       }
-    } catch (e) {
-      // Simulate local approval if server is offline
-      setApprovedSuccess(true);
-      setTimeout(() => onApproved(), 1500);
+    } catch (err) {
+      setErrorMessage(err instanceof Error ? err.message : 'Approval failed.');
     } finally {
       setIsApproving(false);
     }
@@ -109,6 +109,10 @@ export const P03_TranslationReview: React.FC<P03TranslationReviewProps> = ({
         </div>
       </div>
 
+      <div role="status" style={{ marginBottom: '16px', padding: '10px 12px', background: '#FEF3C7', color: '#92400E', borderRadius: '10px', fontWeight: 700 }}>
+        Demonstration portal only. Reviewer identities are not authenticated or credential-checked.
+      </div>
+      {errorMessage && <div role="alert" style={{ marginBottom: '16px', padding: '12px', color: '#991B1B', background: '#FEE2E2', borderRadius: '10px' }}>{errorMessage}</div>}
       {approvedSuccess && (
         <div
           style={{
@@ -127,7 +131,7 @@ export const P03_TranslationReview: React.FC<P03TranslationReviewProps> = ({
         >
           <CheckCircle size={28} />
           <span>
-            Translation approved and signed! Ed25519 bundle updated. Patient App can now sync this verified translation.
+            Demo translation approved. The local demo API generated a bundle; this is not a real clinical review.
           </span>
         </div>
       )}

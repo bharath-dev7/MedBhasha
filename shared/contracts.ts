@@ -41,6 +41,7 @@ export interface Schedule {
   medicine_id: string;
   frequency_type: FrequencyType;
   times_json: string; // JSON array of wall-clock "08:00", "20:00"
+  repeat_days?: string[]; // Optional short weekday names for weekly schedules
   tz_id: string;
   food_relation: FoodRelation;
   qty_text: string; // e.g., "1", "1/2" as written

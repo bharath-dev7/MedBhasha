@@ -82,6 +82,20 @@ export const MedicareScanMedicine: React.FC<MedicareScanMedicineProps> = ({
 
       {/* Viewfinder with Medicine Packaging & Barcode */}
       <div
+        role="status"
+        style={{
+          margin: '12px 20px 0',
+          padding: '10px 12px',
+          borderRadius: '12px',
+          backgroundColor: '#FEF3C7',
+          color: '#92400E',
+          fontSize: '12px',
+          fontWeight: 700,
+        }}
+      >
+        Sample scan demo: package details and safety results are preset examples, not a live check.
+      </div>
+      <div
         style={{
           flex: 1,
           margin: '16px 20px',

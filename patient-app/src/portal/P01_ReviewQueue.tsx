@@ -16,34 +16,17 @@ export const P01_ReviewQueue: React.FC<P01ReviewQueueProps> = ({ onSelectRequest
   const [requests, setRequests] = useState<ReviewRequest[]>([]);
   const [filterType, setFilterType] = useState<'all' | 'prescription' | 'content_item'>('all');
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   const fetchQueue = async () => {
+    setLoading(true);
+    setError(null);
     try {
       const res = await fetch('/portal/queue');
-      if (res.ok) {
-        const data = await res.json();
-        setRequests(data);
-      }
-    } catch (e) {
-      // Mock items if backend offline
-      setRequests([
-        {
-          id: 'req_demo_01',
-          type: 'content_item',
-          status: 'pending',
-          created_at: Date.now() - 3600000,
-          data: {
-            content_item_key: 'instr.take.after_food',
-            locale: 'te',
-            source_english: 'Take {qty} {form} after food.',
-            proposed_translation: 'భోజనం తర్వాత {qty} {form} తీసుకోండి.',
-            sample_renderings: [
-              'Take 1 tablet after food at 08:00 (భోజనం తర్వాత 1 మాత్ర తీసుకోండి - ఉదయం 8:00)',
-              'Take 2 tablets after food at 20:00 (భోజనం తర్వాత 2 మాత్రలు తీసుకోండి - రాత్రి 8:00)',
-            ],
-          },
-        },
-      ]);
+      if (!res.ok) throw new Error(`Queue request failed (${res.status})`);
+      setRequests(await res.json());
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Could not load the review queue.');
     } finally {
       setLoading(false);
     }
@@ -69,6 +52,12 @@ export const P01_ReviewQueue: React.FC<P01ReviewQueueProps> = ({ onSelectRequest
             Unverified prescriptions and regional translations awaiting clinical sign-off (ADR-008 & S5).
           </p>
         </div>
+
+        {error && (
+          <div role="alert" style={{ marginBottom: '16px', padding: '12px', color: '#991B1B', background: '#FEE2E2', borderRadius: '10px' }}>
+            {error} Ensure the backend is running, then refresh the queue.
+          </div>
+        )}
 
         <button
           onClick={fetchQueue}

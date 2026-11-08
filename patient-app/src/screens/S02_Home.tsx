@@ -82,7 +82,7 @@ export const S02_Home: React.FC<S02HomeProps> = ({
       dose.qty_text,
       'tablet',
       dose.food_relation,
-      locale
+      locale === 'te' ? 'te' : 'en'
     );
 
     if (resolved.isLocked) {
@@ -92,7 +92,7 @@ export const S02_Home: React.FC<S02HomeProps> = ({
         englishText: resolved.englishFallbackText,
       });
     } else {
-      VoiceService.speak(resolved.displayText, locale);
+      VoiceService.speak(resolved.displayText, locale === 'te' ? 'te' : 'en');
     }
   };
 

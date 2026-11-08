@@ -42,6 +42,20 @@ export const MedicareVerification: React.FC<MedicareVerificationProps> = ({
     >
       {/* Top Header */}
       <div>
+        <div
+          role="status"
+          style={{
+            backgroundColor: '#FEF3C7',
+            color: '#92400E',
+            padding: '10px 12px',
+            borderRadius: '12px',
+            fontSize: '12px',
+            fontWeight: 700,
+            marginBottom: '14px',
+          }}
+        >
+          Demo only: no payment is collected and no pharmacist is contacted.
+        </div>
         <div style={{ display: 'flex', alignItems: 'center', marginBottom: '24px' }}>
           <button
             onClick={onBack}
@@ -142,7 +156,7 @@ export const MedicareVerification: React.FC<MedicareVerificationProps> = ({
             lineHeight: 1.35,
           }}
         >
-          Unlock Translation &amp; Verification for ₹1 only
+          Demo: preview the ₹1 verification flow
         </h3>
 
         <p
@@ -154,7 +168,7 @@ export const MedicareVerification: React.FC<MedicareVerificationProps> = ({
             lineHeight: 1.4,
           }}
         >
-          Ensures a certified registered pharmacist confirms dosage, timings, and regional-language instructions.
+          This prototype does not verify dosage or contact a registered pharmacist.
         </p>
       </div>
 
@@ -171,7 +185,7 @@ export const MedicareVerification: React.FC<MedicareVerificationProps> = ({
             boxShadow: '0 6px 18px rgba(29, 78, 216, 0.35)',
           }}
         >
-          <span>Pay ₹1</span>
+          <span>Preview ₹1 payment</span>
         </button>
 
         <button
@@ -216,9 +230,9 @@ export const MedicareVerification: React.FC<MedicareVerificationProps> = ({
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
               <div>
                 <h4 style={{ fontSize: '18px', fontWeight: 800, margin: 0 }}>
-                  Fast &amp; Secure Checkout
+                  Payment Preview (Not a Checkout)
                 </h4>
-                <span style={{ fontSize: '12px', color: '#64748B' }}>NPCI / UPI Compliant</span>
+                <span style={{ fontSize: '12px', color: '#64748B' }}>No charge will be made.</span>
               </div>
               <div style={{ fontSize: '22px', fontWeight: 900, color: '#1E40AF' }}>₹1.00</div>
             </div>
@@ -280,7 +294,7 @@ export const MedicareVerification: React.FC<MedicareVerificationProps> = ({
                   <span>Authorising ₹1 Payment...</span>
                 </>
               ) : (
-                <span>Confirm &amp; Pay ₹1</span>
+                <span>Record Demo Payment</span>
               )}
             </button>
 
@@ -305,4 +319,3 @@ export const MedicareVerification: React.FC<MedicareVerificationProps> = ({
     </div>
   );
 };
-

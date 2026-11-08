@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ArrowLeft, Bell, Minus, Plus, Check, Clock, Volume2, X } from 'lucide-react';
 import { localDb } from '../../db/localStore';
+import { FrequencyType } from '../../../../shared/contracts';
 
 interface MedicareDoseReminderProps {
   onBack: () => void;
@@ -22,6 +23,11 @@ export const MedicareDoseReminder: React.FC<MedicareDoseReminderProps> = ({
   // In-app alert simulation state
   const [showActiveAlarm, setShowActiveAlarm] = useState(false);
   const [alarmSnoozed, setAlarmSnoozed] = useState(false);
+  const snoozeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => () => {
+    if (snoozeTimer.current) clearTimeout(snoozeTimer.current);
+  }, []);
 
   const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
@@ -50,8 +56,17 @@ export const MedicareDoseReminder: React.FC<MedicareDoseReminderProps> = ({
   const formattedTime = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')} ${period}`;
 
   const handleSave = () => {
+    if (selectedDays.length === 0) {
+      window.alert('Select at least one repeat day before saving.');
+      return;
+    }
+
     const schedId = 'sched_' + Date.now();
     const medId = 'med_' + Date.now();
+    const hour24 = (hour % 12) + (period === 'PM' ? 12 : 0);
+    const time24 = `${hour24.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+    const frequencyType: FrequencyType =
+      selectedDays.length === days.length ? 'daily_times' : 'weekly_days';
     localDb.addMedicine({
       id: medId,
       display_name: medicineName,
@@ -65,13 +80,15 @@ export const MedicareDoseReminder: React.FC<MedicareDoseReminderProps> = ({
     localDb.addSchedule({
       id: schedId,
       medicine_id: medId,
-      frequency_type: 'custom',
-      times_json: JSON.stringify([formattedTime]),
+      frequency_type: frequencyType,
+      times_json: JSON.stringify([time24]),
+      repeat_days: selectedDays,
       tz_id: 'Asia/Kolkata',
+      food_relation: 'unspecified',
       qty_text: '1 tablet',
       start_date: new Date().toISOString().split('T')[0],
-      confirm_status: 'confirmed',
-      confirmed_at: Date.now(),
+      confirm_status: enabled ? 'confirmed' : 'draft',
+      confirmed_at: enabled ? Date.now() : undefined,
     });
     onSaved();
   };
@@ -358,7 +375,7 @@ export const MedicareDoseReminder: React.FC<MedicareDoseReminderProps> = ({
             cursor: 'pointer',
           }}
         >
-          🔔 Test Live Reminder Alert (Snooze / Stop)
+          {alarmSnoozed ? 'Reminder snoozed for 10 minutes' : 'Preview Reminder Alert (Demo)'}
         </button>
       </div>
 
@@ -418,10 +435,12 @@ export const MedicareDoseReminder: React.FC<MedicareDoseReminderProps> = ({
               <button
                 onClick={() => {
                   setAlarmSnoozed(true);
-                  setTimeout(() => {
-                    setShowActiveAlarm(false);
+                  setShowActiveAlarm(false);
+                  if (snoozeTimer.current) clearTimeout(snoozeTimer.current);
+                  snoozeTimer.current = setTimeout(() => {
                     setAlarmSnoozed(false);
-                  }, 800);
+                    setShowActiveAlarm(true);
+                  }, 10 * 60 * 1000);
                 }}
                 style={{
                   padding: '14px',
@@ -464,4 +483,3 @@ export const MedicareDoseReminder: React.FC<MedicareDoseReminderProps> = ({
     </div>
   );
 };
-

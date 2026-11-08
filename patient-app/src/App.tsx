@@ -35,6 +35,7 @@ import { P05_AuditLog } from './portal/P05_AuditLog';
 
 import { SupportedLocale, supportedLanguages } from '../../shared/ux-copy';
 import { SamplePrescriptionScenario } from '../../shared/sample-data';
+import { ReviewRequest } from '../../shared/contracts';
 import {
   Smartphone,
   Stethoscope,
@@ -83,6 +84,7 @@ export const App: React.FC = () => {
   const [appMode, setAppMode] = useState<'patient' | 'portal'>('patient');
   const [activeView, setActiveView] = useState<MedicareView>('home');
   const [portalView, setPortalView] = useState<PortalView>('portal_queue');
+  const [selectedReviewRequest, setSelectedReviewRequest] = useState<ReviewRequest | null>(null);
   const [showDevTools, setShowDevTools] = useState(false);
 
   // Active extracted context
@@ -153,9 +155,7 @@ export const App: React.FC = () => {
   ];
 
   // ONLY Home Dashboard (Screen 4) and Medication Records (Screen 12) have bottom nav on the poster!
-  const showBottomNav =
-    appMode === 'patient' &&
-    (activeView === 'home' || activeView === 'records');
+  const showBottomNav = appMode === 'patient';
 
   return (
     <div style={{ minHeight: '100vh', backgroundColor: appMode === 'portal' ? '#0F172A' : '#E2E8F0' }}>
@@ -444,10 +444,10 @@ export const App: React.FC = () => {
                 <Stethoscope size={24} color="#38BDF8" />
                 <div>
                   <h2 style={{ fontSize: '18px', fontWeight: 800, margin: 0 }}>
-                    MEDICARE Pharmacist Verification Portal
+                    MEDICARE Pharmacist Portal (Demo)
                   </h2>
                   <span style={{ fontSize: '12px', color: '#94A3B8' }}>
-                    Authorised Clinical Reviewer ID: #PHARM-DEL-0104 • Signed Ed25519 Trust Layer
+                    Demonstration review workflow • reviewer identities are not authenticated
                   </span>
                 </div>
               </div>
@@ -497,7 +497,7 @@ export const App: React.FC = () => {
                     cursor: 'pointer',
                   }}
                 >
-                  Immutable Audit Log
+                  Audit Log (Demo)
                 </button>
               </div>
             </div>
@@ -506,22 +506,26 @@ export const App: React.FC = () => {
             <div style={{ padding: '24px' }}>
               {portalView === 'portal_queue' && (
                 <P01_ReviewQueue
-                  onSelectPrescription={() => setPortalView('portal_review_rx')}
-                  onSelectTranslation={() => setPortalView('portal_review_trans')}
+                  onSelectRequest={(request) => {
+                    setSelectedReviewRequest(request);
+                    setPortalView(
+                      request.type === 'content_item' ? 'portal_review_trans' : 'portal_review_rx'
+                    );
+                  }}
                 />
               )}
-              {portalView === 'portal_review_rx' && (
+              {portalView === 'portal_review_rx' && selectedReviewRequest && (
                 <P02_PrescriptionReview
-                  onApproved={() => setPortalView('portal_queue')}
-                  onRejected={() => setPortalView('portal_queue')}
-                  onCancel={() => setPortalView('portal_queue')}
+                  request={selectedReviewRequest}
+                  onBack={() => setPortalView('portal_queue')}
+                  onReviewed={() => setPortalView('portal_queue')}
                 />
               )}
-              {portalView === 'portal_review_trans' && (
+              {portalView === 'portal_review_trans' && selectedReviewRequest && (
                 <P03_TranslationReview
+                  request={selectedReviewRequest}
+                  onBack={() => setPortalView('portal_queue')}
                   onApproved={() => setPortalView('portal_queue')}
-                  onRejected={() => setPortalView('portal_queue')}
-                  onCancel={() => setPortalView('portal_queue')}
                 />
               )}
               {portalView === 'portal_registry' && <P04_ContentRegistry />}

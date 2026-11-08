@@ -93,6 +93,37 @@ describe('S2, S6, S7: Offline LocalStore & Safety Invariants', () => {
     expect(doses.map((d) => d.medicine_name)).toContain('Metformin Confirmed');
   });
 
+  it('weekly schedules do not create a dose on a day outside their repeat days', () => {
+    const now = new Date();
+    const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const otherDay = weekdays[(now.getDay() + 1) % weekdays.length];
+    const medicine: Medicine = {
+      id: 'med_weekly_test',
+      display_name: 'Weekly test medicine',
+      source: 'manual',
+      confirm_status: 'confirmed',
+      created_at: Date.now(),
+      updated_at: Date.now(),
+    };
+    const schedule: Schedule = {
+      id: 'sched_weekly_test',
+      medicine_id: medicine.id,
+      frequency_type: 'weekly_days',
+      times_json: JSON.stringify(['08:00']),
+      repeat_days: [otherDay],
+      tz_id: 'Asia/Kolkata',
+      food_relation: 'unspecified',
+      qty_text: '1 tablet',
+      start_date: new Date().toISOString().split('T')[0],
+      confirm_status: 'confirmed',
+    };
+
+    localDb.addMedicine(medicine);
+    localDb.addSchedule(schedule);
+
+    expect(localDb.getState().doseEvents.filter((dose) => dose.medicine_id === medicine.id)).toHaveLength(0);
+  });
+
   it('S7 invariant: marking a dose as taken immediately cancels any pending guardian alert', () => {
     const state = localDb.getState();
     const testDose = state.doseEvents[0];

@@ -60,6 +60,20 @@ export const MedicareAuth: React.FC<MedicareAuthProps> = ({ onBack, onSuccess })
       </div>
 
       <div style={{ marginBottom: '28px' }}>
+        <div
+          role="status"
+          style={{
+            padding: '10px 12px',
+            marginBottom: '14px',
+            borderRadius: '12px',
+            backgroundColor: '#FEF3C7',
+            color: '#92400E',
+            fontSize: '12px',
+            fontWeight: 700,
+          }}
+        >
+          Demo profile only. No account is created and credentials are not checked.
+        </div>
         <h2
           style={{
             fontSize: '26px',
@@ -68,7 +82,7 @@ export const MedicareAuth: React.FC<MedicareAuthProps> = ({ onBack, onSuccess })
             margin: '0 0 6px 0',
           }}
         >
-          {isLogin ? 'Welcome Back!' : 'Create Account'}
+          {isLogin ? 'Demo Sign In' : 'Create Demo Profile'}
         </h2>
         <p style={{ fontSize: '14px', color: '#64748B', margin: 0 }}>
           {isLogin
@@ -255,4 +269,3 @@ export const MedicareAuth: React.FC<MedicareAuthProps> = ({ onBack, onSuccess })
     </div>
   );
 };
-

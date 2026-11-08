@@ -75,7 +75,7 @@ export const MedicareVerifiedDetails: React.FC<MedicareVerifiedDetailsProps> = (
           <h2 style={{ fontSize: '18px', fontWeight: 700, margin: '0 0 0 8px' }}>Verified Details</h2>
         </div>
 
-        {/* Big Green Badge: Verified by Pharmacist (Poster Screen 8) */}
+        {/* Demo status indicator; this screen does not represent a clinical review. */}
         <div style={{ textAlign: 'center', margin: '10px 0 24px 0' }}>
           <div
             style={{
@@ -95,10 +95,10 @@ export const MedicareVerifiedDetails: React.FC<MedicareVerifiedDetailsProps> = (
           </div>
 
           <h3 style={{ fontSize: '20px', fontWeight: 800, color: '#166534', margin: '0 0 4px 0' }}>
-            Verified by Pharmacist
+            Demo Verification Preview
           </h3>
           <p style={{ fontSize: '13px', color: '#64748B', margin: 0 }}>
-            Reviewed by Reg. Pharmacist #AP-48201
+            No pharmacist has reviewed this demonstration
           </p>
         </div>
 

@@ -4,15 +4,13 @@
   "private": true,
   "description": "MedBhasha - AI-assisted, offline-first, multilingual medication assistant with Translation Lock",
   "workspaces": [
-    "shared",
     "backend",
-    "patient-app",
-    "trust-portal"
+    "patient-app"
   ],
   "scripts": {
     "start:backend": "npm --prefix backend run dev",
     "start:patient": "npm --prefix patient-app run dev",
-    "start:portal": "npm --prefix trust-portal run dev",
+    "start:portal": "npm --prefix patient-app run dev",
     "dev": "npm --prefix patient-app run dev",
     "test": "vitest run"
   },

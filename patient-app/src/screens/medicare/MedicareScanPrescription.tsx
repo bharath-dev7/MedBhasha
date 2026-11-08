@@ -67,6 +67,20 @@ export const MedicareScanPrescription: React.FC<MedicareScanPrescriptionProps> =
 
       {/* Camera Viewfinder Area */}
       <div
+        role="status"
+        style={{
+          margin: '12px 20px 0',
+          padding: '10px 12px',
+          borderRadius: '12px',
+          backgroundColor: '#FEF3C7',
+          color: '#92400E',
+          fontSize: '12px',
+          fontWeight: 700,
+        }}
+      >
+        Sample scan demo: this screen uses preset prescription data and does not read a live image.
+      </div>
+      <div
         style={{
           flex: 1,
           margin: '16px 20px',

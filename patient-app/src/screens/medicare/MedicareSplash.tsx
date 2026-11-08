@@ -75,7 +75,7 @@ export const MedicareSplash: React.FC<MedicareSplashProps> = ({ onGetStarted }) 
             }}
           >
             <ShieldCheck size={16} />
-            <span>AI-Powered Safety & Verification</span>
+            <span>Medication Safety Demo</span>
           </div>
         </div>
       </div>
@@ -111,4 +111,3 @@ export const MedicareSplash: React.FC<MedicareSplashProps> = ({ onGetStarted }) 
     </div>
   );
 };
-

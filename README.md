@@ -1,91 +1,78 @@
-# MEDICARE: Smart Medicine. Safe Life.
-> **An AI-Powered Smart Medication Management and Patient Safety Mobile Application**  
-> *Course: Doctor of Pharmacy (Pharm.D) | Department of Pharmacy Practice*
+# MedBhasha
 
----
+MedBhasha is a web-based prototype for medication management and multilingual medication instructions. It combines a patient-facing demonstration app with an Express API and a pharmacist-oriented content review portal.
 
-## 📱 Project Overview
+> **Project status:** This is a demonstration prototype, not a production healthcare service or a substitute for advice from a qualified healthcare professional. Several patient flows use sample data or simulated interactions. See the [current capabilities report](CURRENT_CAPABILITIES.md) for what is implemented and what remains limited.
 
-**MEDICARE** is an AI-assisted medication management, adherence, and patient safety application designed to address critical medication-safety challenges:
-1. **Prescription Transcription & Comprehension:** OCR and AI text extraction with high-visibility confidence and uncertainty flagging.
-2. **Clinical Pharmacist Verification:** Professional review routing with a nominal **₹1 Translation Lock & Verification** gateway.
-3. **Multilingual Access:** Native regional language instructions across **English, తెలుగు (Telugu), हिन्दी (Hindi), தமிழ் (Tamil), and ಕನ್ನಡ (Kannada)**.
-4. **Smart Dose Reminders:** Configurable time and day schedules with interactive **Snooze (10 min)** and **Stop / Taken** controls.
-5. **Expiry Monitoring:** Automated detection of packaging dates, generating proactive alerts (30, 15, and 7 days before expiry).
-6. **Suspicious Medicine Detection:** Verification against authentic CDSCO/WHO datasets and cautious warnings for unverified packaging.
-7. **Offline-First Resilience:** Encrypted local database supporting full offline reminder scheduling and dose logging.
-8. **Unused Medicine Donation:** Authorized collection centre locator and strict clinical eligibility checklist for unused medicines.
+## What the project currently includes
 
----
+- A React and TypeScript patient interface for browsing sample medicines, prescription and medicine scanning demonstrations, dose reminders, expiry and suspicious-medicine alerts, records, feedback, and donation requests.
+- English, Telugu, Hindi, Tamil, and Kannada language choices. Translation coverage varies by screen and content.
+- A local browser store that saves prototype data in `localStorage`.
+- A reminder scheduler that creates local dose events for the selected weekdays while the app data is available. It does not provide background or operating-system notifications.
+- An Express trust-layer API for sample extraction, review requests, signed content bundles, escalation records, and portal operations.
+- A pharmacist portal demonstration for reviewing seeded requests, approving or rejecting content, viewing the content registry, and viewing audit events.
+- Automated tests for the local store, translation gate, cryptographic bundle utilities, expiry logic, and MEDICARE features.
 
-## 🖼️ The 14 Application Screens (Matching System Poster)
+Many visible patient-app interactions are demonstrations rather than live services. The account flow creates a local demo profile, scans use preset examples in the main navigation, the ₹1 payment screen does not charge a payment method, and medicine alerts do not query an authoritative drug database. Demo labels in the UI identify these limitations.
 
-| # | Screen Name | Description & Key Safety Features |
-|---|---|---|
-| **1** | **Splash Screen** | MEDICARE Blue Heart + Medical Cross branding, *"Smart Medicine. Safe Life."*, *"Get Started"* button. |
-| **2** | **Registration / Create Account** | Full Name, Mobile Number, Email Address, Create Password, Register & Login modes. |
-| **3** | **Language Selection** | Native language selector for **English, Telugu, Hindi, Tamil, and Kannada** with checkmark indicator. |
-| **4** | **Home Dashboard** | *"Hello, User! 👋"*, Notification Bell, *"Take your medicines on time!"* clock banner, 6-card quick action grid (Scan Prescription, Scan Medicine, Reminders, Expiry Alerts, My Records, Donate Medicines), and 4-tab bottom navigation. |
-| **5** | **Prescription Scan** | Camera viewfinder with Rx watermark, paper prescription sample selector, scanning laser animation, and instant OCR field extraction. |
-| **6** | **Medicine Scan** | Packaging & barcode viewfinder with green *"✓ Details Extracted"* card (Medicine Name, Mfg Date, Exp Date, Batch No, and Confirm CTA). |
-| **7** | **Pharmacist Verification (₹1)** | Shield icon, *"Verification Required - Some information needs pharmacist verification"*, *"Unlock Translation & Verification for ₹1 only"*, interactive UPI/Card payment modal, and *"or Continue Later"*. |
-| **8** | **Verified Details** | Green *"Verified by Pharmacist"* badge, verified medicine info (dose, frequency, duration), and *"Translation Unlocked"* card in selected regional language with text-to-speech audio. |
-| **9** | **Dose Reminder** | Bell icon, *"Set Reminder"*, stepper time selector (08:00 AM +/-), day of week pills, *"Enable Reminder"* toggle, and interactive Snooze & Stop alarm modal. |
-| **10** | **Expiry Alert** | Warning triangle icon, high-visibility red banner (*"This medicine is expiring in 7 days!"*), batch and shelf-life details, and safe disposal advice. |
-| **11** | **Suspicious Medicine Alert** | Red warning icon, *"Suspicious Medicine Detected! Please verify with a pharmacist"*, blister strip visual, and *"Contact Pharmacist"* helpline action. |
-| **12** | **Medication Records ("My Records")** | Segmented tabs (`All` \| `Active` \| `Completed`), active medicine list (Paracetamol, Amoxicillin, Vitamin D3), and adherence status. |
-| **13** | **Donate Medicines** | Heart-in-hands icon, *"Donate Unused Medicines"*, CDSCO/FDA donation eligibility checklist, and authorized collection centre submission. |
-| **14** | **Feedback** | *"Your Feedback Matters!"*, interactive 5-star rating system, suggestion notes, and persistent store logging. |
-| **15** | **Profile & Disclaimer** | User profile, active language switch, and mandatory **Medical Disclaimer** (Report §6.16). |
-| **16** | **System Architecture View** | Interactive flowchart of the Poster Architecture (User -> UI Layer -> 5 Subsystems -> Clinical Outcomes) + one-click toggle to the **Pharmacist Verification Portal**. |
+## Technology
 
----
+- **Patient app:** React, TypeScript, Vite
+- **Trust layer:** Node.js, Express, TypeScript
+- **Shared code:** TypeScript contracts, sample data, language copy, and bundle-signing utilities
+- **Tests:** Vitest
 
-## 🏛️ System Architecture
+## Run locally
 
-```mermaid
-flowchart TD
-    User["User (Patient / Caregiver)"] --> UI["MEDICARE Mobile App (UI Layer)"]
-    
-    subgraph Core_Subsystems["Core Subsystems"]
-        UI --> OCR["1. OCR & AI Processing"]
-        UI --> Pharm["2. Pharmacist Verification"]
-        UI --> Pay["3. Payment Gateway (₹1)"]
-        UI --> Notif["4. Notification Service"]
-        UI --> Sync["5. Database & Cloud Sync"]
-    end
-    
-    OCR --> Safety["Medication Safety"]
-    Pharm --> Safety
-    Pay --> Adh["Better Adherence"]
-    Notif --> Adh
-    Sync --> Health["Improved Health"]
+Use a Node.js and npm version compatible with the dependencies in `package-lock.json`. From the project root:
+
+```bash
+npm install
 ```
 
----
+Start the backend and patient app in separate terminals:
 
-## 🚀 Running the Application
-
-### 1. Patient App & Interactive Showcase (Port 5173)
 ```bash
-cd patient-app
+npm run start:backend
+```
+
+```bash
 npm run dev
 ```
-Open **`http://localhost:5173`** in your browser.
 
-- Use the **Top Screen Switcher** dropdown to instantly jump to any of the 14 poster screens for demonstrations and grading.
-- Use the **Language Dropdown** to test real-time switching between English, Telugu, Hindi, Tamil, and Kannada.
-- Switch to the **Pharmacist Portal** tab to inspect the registered pharmacist verification queue and cryptographic audit logs.
+Open [http://localhost:5173](http://localhost:5173). The Vite development server proxies API requests to the backend on port `4000`.
 
-### 2. Trust Layer Backend (Port 4000)
-```bash
-cd backend
-npm run dev
-```
-Runs the Express REST API with Ed25519 bundle signing and verification endpoints.
+The backend starts with demonstration data and does not require an API key for its sample extraction response. To enable the optional Gemini Vision extraction endpoint, create `backend/.env` from `backend/.env.example` and set `GEMINI_API_KEY`. Keep API keys private and do not commit `.env` files.
 
-### 3. Run Automated Tests
+Run the automated tests from the project root:
+
 ```bash
 npm test
 ```
-Executes all 25 unit and integration tests across crypto bundles, expiry date evaluation, translation lock gates, and MEDICARE features.
+
+Build the backend with:
+
+```bash
+npm --prefix backend run build
+```
+
+Build the patient app with:
+
+```bash
+npm --prefix patient-app run build
+```
+
+## Project layout
+
+```text
+backend/       Express API, seeded trust-layer state, and bundle signing
+patient-app/   React patient demo, pharmacist portal, and local browser store
+shared/        Shared data contracts, sample data, language copy, and crypto helpers
+```
+
+The main app shell is `patient-app/src/App.tsx`. It switches between the patient demonstration and portal views. The pharmacist portal is part of the patient-app project and uses the same Vite server. The backend routes are defined in `backend/src/index.ts`; shared API and data types are in `shared/contracts.ts`.
+
+## Safety and deployment note
+
+Do not use this prototype to make treatment decisions or rely on it for medication reminders. It does not provide production authentication, payment processing, encrypted data storage, durable server persistence, real pharmacist credential verification, or a validated clinical OCR workflow. The portal's review decisions and signed bundles are demonstrations, not clinical endorsements. Confirm prescriptions and medicine instructions with a qualified healthcare professional.

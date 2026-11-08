@@ -333,6 +333,10 @@ class LocalDatabase {
 
     for (const sched of this.state.schedules) {
       if (sched.confirm_status !== 'confirmed') continue; // S2 ENFORCEMENT
+      if (sched.repeat_days?.length) {
+        const todayName = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][now.getDay()];
+        if (!sched.repeat_days.includes(todayName)) continue;
+      }
       const med = this.state.medicines.find((m) => m.id === sched.medicine_id);
       if (!med) continue;
 

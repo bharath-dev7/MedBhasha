@@ -60,6 +60,7 @@ export const P02_PrescriptionReview: React.FC<P02PrescriptionReviewProps> = ({
   const [comments, setComments] = useState('All active dosages cross-checked against doctor handwriting.');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const handleZoom = (delta: number) => {
     setZoomLevel((prev) => Math.min(3, Math.max(0.6, prev + delta)));
@@ -110,6 +111,7 @@ export const P02_PrescriptionReview: React.FC<P02PrescriptionReviewProps> = ({
 
   const handleSubmitReview = async () => {
     setIsSubmitting(true);
+    setErrorMessage(null);
     try {
       const res = await fetch(`/portal/items/${request.id}/approve`, {
         method: 'POST',
@@ -124,15 +126,13 @@ export const P02_PrescriptionReview: React.FC<P02PrescriptionReviewProps> = ({
       });
 
       if (res.ok) {
-        setSuccessMessage('Prescription review submitted! Marked as Checked by a Pharmacist.');
+        setSuccessMessage('Demo review submitted to the local trust-layer API.');
         setTimeout(() => onReviewed(), 1600);
       } else {
-        setSuccessMessage('Prescription verified locally.');
-        setTimeout(() => onReviewed(), 1600);
+        throw new Error(`Review submission failed (${res.status})`);
       }
-    } catch {
-      setSuccessMessage('Offline mode: Review submitted and verified locally.');
-      setTimeout(() => onReviewed(), 1600);
+    } catch (err) {
+      setErrorMessage(err instanceof Error ? err.message : 'Review submission failed.');
     } finally {
       setIsSubmitting(false);
     }
@@ -141,8 +141,9 @@ export const P02_PrescriptionReview: React.FC<P02PrescriptionReviewProps> = ({
   const handleRequestClearerPhoto = async () => {
     if (!confirm('Request patient to provide a clearer prescription photo?')) return;
     setIsSubmitting(true);
+    setErrorMessage(null);
     try {
-      await fetch(`/portal/items/${request.id}/reject`, {
+      const res = await fetch(`/portal/items/${request.id}/reject`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -150,10 +151,11 @@ export const P02_PrescriptionReview: React.FC<P02PrescriptionReviewProps> = ({
           comment: `Clearer photo requested: ${comments}`,
         }),
       });
+      if (!res.ok) throw new Error(`Request failed (${res.status})`);
       setSuccessMessage('Clearer photo request sent to patient.');
       setTimeout(() => onReviewed(), 1500);
-    } catch {
-      onReviewed();
+    } catch (err) {
+      setErrorMessage(err instanceof Error ? err.message : 'Could not submit the request.');
     } finally {
       setIsSubmitting(false);
     }
@@ -161,6 +163,10 @@ export const P02_PrescriptionReview: React.FC<P02PrescriptionReviewProps> = ({
 
   return (
     <div style={{ padding: '24px', maxWidth: '1280px', margin: '0 auto' }}>
+      <div role="status" style={{ marginBottom: '16px', padding: '10px 12px', background: '#FEF3C7', color: '#92400E', borderRadius: '10px', fontWeight: 700 }}>
+        Demonstration portal only. Reviewer identities are not authenticated or credential-checked.
+      </div>
+      {errorMessage && <div role="alert" style={{ marginBottom: '16px', padding: '12px', color: '#991B1B', background: '#FEE2E2', borderRadius: '10px' }}>{errorMessage}</div>}
       {/* Top Header */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>

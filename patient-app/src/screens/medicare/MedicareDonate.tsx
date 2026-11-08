@@ -69,6 +69,9 @@ export const MedicareDonate: React.FC<MedicareDonateProps> = ({ onBack, onSucces
 
         {step === 'info' && (
           <div style={{ textAlign: 'center' }}>
+            <div role="status" style={{ marginBottom: '12px', padding: '10px', borderRadius: '10px', background: '#FEF3C7', color: '#92400E', fontSize: '12px', fontWeight: 700 }}>
+              Demo only: centre names and distances are sample data; no donation is submitted.
+            </div>
             {/* Heart in Hands Icon */}
             <div
               style={{
@@ -260,4 +263,3 @@ export const MedicareDonate: React.FC<MedicareDonateProps> = ({ onBack, onSucces
     </div>
   );
 };
-
