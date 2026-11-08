@@ -236,11 +236,11 @@ export const MedicareArchitecture: React.FC<MedicareArchitectureProps> = ({
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', marginBottom: '8px' }}>
             <Stethoscope size={22} color="#38BDF8" />
             <h3 style={{ fontSize: '17px', fontWeight: 800, margin: 0, color: '#FFFFFF' }}>
-              Pharmacist Portal Live Mode
+              Pharmacist Portal Demo
             </h3>
           </div>
           <p style={{ fontSize: '13px', color: '#94A3B8', margin: '0 0 16px 0' }}>
-            Switch into the Authorised Pharmacist View to approve review requests, verify dosage, sign translations, and inspect the clinical audit log.
+            Explore sample review requests and translation-bundle workflows. Reviewer identities are not authenticated, and no clinical sign-off occurs.
           </p>
 
           <button
@@ -299,4 +299,3 @@ export const MedicareArchitecture: React.FC<MedicareArchitectureProps> = ({
     </div>
   );
 };
-

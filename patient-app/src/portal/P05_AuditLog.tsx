@@ -35,10 +35,10 @@ export const P05_AuditLog: React.FC = () => {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
         <div>
           <h1 className="type-title" style={{ margin: '0 0 6px 0', fontSize: '28px', color: 'var(--color-ink)' }}>
-            ఆడిట్ లాగ్ (Immutable Audit Trail)
+            ఆడిట్ లాగ్ (Audit Log Demo)
           </h1>
           <p style={{ margin: 0, color: 'var(--color-quiet)', fontSize: '16px' }}>
-            Append-only security log of all pharmacist verifications, bundle signings, and dose escalations.
+            Demonstration event log stored in backend memory; it is not an immutable security record.
           </p>
         </div>
 

@@ -49,15 +49,9 @@ export const P01_ReviewQueue: React.FC<P01ReviewQueueProps> = ({ onSelectRequest
             ఫార్మసిస్ట్ సమీక్ష జాబితా (Pharmacist Review Queue)
           </h1>
           <p style={{ margin: 0, color: 'var(--color-quiet)', fontSize: '16px' }}>
-            Unverified prescriptions and regional translations awaiting clinical sign-off (ADR-008 & S5).
+            Sample prescriptions and regional translations for demonstrating the review workflow. No clinical sign-off occurs.
           </p>
         </div>
-
-        {error && (
-          <div role="alert" style={{ marginBottom: '16px', padding: '12px', color: '#991B1B', background: '#FEE2E2', borderRadius: '10px' }}>
-            {error} Ensure the backend is running, then refresh the queue.
-          </div>
-        )}
 
         <button
           onClick={fetchQueue}
@@ -74,6 +68,12 @@ export const P01_ReviewQueue: React.FC<P01ReviewQueueProps> = ({ onSelectRequest
           Refresh Queue
         </button>
       </div>
+
+      {error && (
+        <div role="alert" style={{ marginBottom: '16px', padding: '12px', color: '#991B1B', background: '#FEE2E2', borderRadius: '10px' }}>
+          {error} Ensure the backend is running, then refresh the queue.
+        </div>
+      )}
 
       {/* Filter Tabs */}
       <div style={{ display: 'flex', gap: '10px', marginBottom: '20px' }}>
@@ -115,27 +115,33 @@ export const P01_ReviewQueue: React.FC<P01ReviewQueueProps> = ({ onSelectRequest
             No pending items in queue. All translations and prescriptions are up to date.
           </div>
         ) : (
-          <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
-            <thead>
-              <tr style={{ backgroundColor: 'var(--color-paper)', borderBottom: '2px solid var(--color-line-soft)' }}>
-                <th style={{ padding: '16px', fontWeight: 700, color: 'var(--color-ink)' }}>Type</th>
-                <th style={{ padding: '16px', fontWeight: 700, color: 'var(--color-ink)' }}>Item / Key</th>
-                <th style={{ padding: '16px', fontWeight: 700, color: 'var(--color-ink)' }}>Target Locale</th>
-                <th style={{ padding: '16px', fontWeight: 700, color: 'var(--color-ink)' }}>Status</th>
-                <th style={{ padding: '16px', fontWeight: 700, color: 'var(--color-ink)' }}>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map((req) => (
-                <tr
-                  key={req.id}
-                  style={{
-                    borderBottom: '1px solid var(--color-line-soft)',
-                    cursor: 'pointer',
-                    transition: 'background var(--motion-quick)',
-                  }}
-                  onClick={() => onSelectRequest(req)}
-                >
+          <div
+            role="region"
+            aria-label="Review queue table; scroll horizontally to see all columns"
+            tabIndex={0}
+            style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}
+          >
+            <table style={{ width: '100%', minWidth: '660px', borderCollapse: 'collapse', textAlign: 'left' }}>
+              <thead>
+                <tr style={{ backgroundColor: 'var(--color-paper)', borderBottom: '2px solid var(--color-line-soft)' }}>
+                  <th style={{ padding: '16px', fontWeight: 700, color: 'var(--color-ink)' }}>Type</th>
+                  <th style={{ padding: '16px', fontWeight: 700, color: 'var(--color-ink)' }}>Item / Key</th>
+                  <th style={{ padding: '16px', fontWeight: 700, color: 'var(--color-ink)' }}>Target Locale</th>
+                  <th style={{ padding: '16px', fontWeight: 700, color: 'var(--color-ink)' }}>Status</th>
+                  <th style={{ padding: '16px', fontWeight: 700, color: 'var(--color-ink)' }}>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filtered.map((req) => (
+                  <tr
+                    key={req.id}
+                    style={{
+                      borderBottom: '1px solid var(--color-line-soft)',
+                      cursor: 'pointer',
+                      transition: 'background var(--motion-quick)',
+                    }}
+                    onClick={() => onSelectRequest(req)}
+                  >
                   <td style={{ padding: '16px' }}>
                     <span
                       style={{
@@ -201,10 +207,11 @@ export const P01_ReviewQueue: React.FC<P01ReviewQueueProps> = ({ onSelectRequest
                       <ChevronRight size={16} />
                     </button>
                   </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         )}
       </div>
     </div>

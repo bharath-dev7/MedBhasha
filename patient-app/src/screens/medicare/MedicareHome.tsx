@@ -302,10 +302,10 @@ export const MedicareHome: React.FC<MedicareHomeProps> = ({
           </div>
           <div>
             <div style={{ fontSize: '13px', fontWeight: 700, color: '#9F1239' }}>
-              Safety Check Feature
+              Safety Check Demo
             </div>
             <div style={{ fontSize: '12px', color: '#BE123C' }}>
-              Check suspicious batch codes & packaging
+              View a sample suspicious-medicine alert
             </div>
           </div>
         </div>

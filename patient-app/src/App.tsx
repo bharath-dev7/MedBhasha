@@ -155,7 +155,7 @@ export const App: React.FC = () => {
   ];
 
   // ONLY Home Dashboard (Screen 4) and Medication Records (Screen 12) have bottom nav on the poster!
-  const showBottomNav = appMode === 'patient';
+  const showBottomNav = appMode === 'patient' && ['home', 'records'].includes(activeView);
 
   return (
     <div style={{ minHeight: '100vh', backgroundColor: appMode === 'portal' ? '#0F172A' : '#E2E8F0' }}>
@@ -197,10 +197,10 @@ export const App: React.FC = () => {
               </div>
               <div>
                 <div style={{ fontWeight: 900, fontSize: '18px', letterSpacing: '0.5px' }}>
-                  MEDICARE Pharmacist Portal
+                  MEDICARE Pharmacist Portal (Demo)
                 </div>
                 <div style={{ fontSize: '11px', color: '#5EEAD4', fontWeight: 600 }}>
-                  Clinical Trust Layer &amp; Verification
+                  Sample review workflow; no verified clinical sign-off
                 </div>
               </div>
             </div>
@@ -539,6 +539,7 @@ export const App: React.FC = () => {
       {appMode === 'patient' && (
         <>
           <div
+            className="medicare-dev-controls"
             style={{
               position: 'fixed',
               bottom: '16px',
@@ -547,6 +548,7 @@ export const App: React.FC = () => {
             }}
           >
             <button
+              aria-label="Open screen and portal shortcuts"
               onClick={() => setShowDevTools(!showDevTools)}
               style={{
                 backgroundColor: 'rgba(15, 23, 42, 0.85)',
@@ -572,6 +574,7 @@ export const App: React.FC = () => {
           {/* Quick Drawer for jump testing */}
           {showDevTools && (
             <div
+              className="medicare-dev-drawer"
               style={{
                 position: 'fixed',
                 bottom: '56px',
@@ -590,7 +593,7 @@ export const App: React.FC = () => {
             >
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <span style={{ fontSize: '13px', fontWeight: 800, color: '#0F172A' }}>
-                  Quick Jump (14 Poster Screens)
+                  Quick Jump (Patient App Screens)
                 </span>
                 <button
                   onClick={() => setShowDevTools(false)}

@@ -97,6 +97,11 @@
   .medicare-status-bar {
     display: none !important;
   }
+
+  .medicare-dev-controls,
+  .medicare-dev-drawer {
+    display: none !important;
+  }
 }
 
 .medicare-status-bar {
