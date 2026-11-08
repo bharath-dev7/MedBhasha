@@ -14,7 +14,7 @@ MedBhasha is a web-based prototype for medication management and multilingual me
 - A pharmacist portal demonstration for reviewing seeded requests, approving or rejecting content, viewing the content registry, and viewing audit events.
 - Automated tests for the local store, translation gate, cryptographic bundle utilities, expiry logic, and MEDICARE features.
 
-Many visible patient-app interactions are demonstrations rather than live services. The account flow creates a local demo profile, scans use preset examples in the main navigation, the ₹1 payment screen does not charge a payment method, and medicine alerts do not query an authoritative drug database. Demo labels in the UI identify these limitations.
+Many visible patient-app interactions are demonstrations rather than live services. The account flow creates a local demo profile, scans use preset examples in the main navigation, and medicine alerts do not query an authoritative drug database. The former ₹1 payment proposal has been removed; no payment is requested or collected.
 
 ## Technology
 
@@ -75,4 +75,4 @@ The main app shell is `patient-app/src/App.tsx`. It switches between the patient
 
 ## Safety and deployment note
 
-Do not use this prototype to make treatment decisions or rely on it for medication reminders. It does not provide production authentication, payment processing, encrypted data storage, durable server persistence, real pharmacist credential verification, or a validated clinical OCR workflow. The portal's review decisions and signed bundles are demonstrations, not clinical endorsements. Confirm prescriptions and medicine instructions with a qualified healthcare professional.
+Do not use this prototype to make treatment decisions or rely on it for medication reminders. It does not provide production authentication, encrypted data storage, durable server persistence, real pharmacist credential verification, or a validated clinical OCR workflow. The portal's review decisions and signed bundles are demonstrations, not clinical endorsements. Confirm prescriptions and medicine instructions with a qualified healthcare professional.

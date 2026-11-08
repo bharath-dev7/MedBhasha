@@ -32,14 +32,6 @@ export interface FeedbackEntry {
   date: number;
 }
 
-export interface PaymentEntry {
-  id: string;
-  medicineId: string;
-  amount: number;
-  status: 'paid' | 'pending';
-  date: number;
-}
-
 export interface DonationEntry {
   id: string;
   medicineName: string;
@@ -62,7 +54,6 @@ export interface LocalDatabaseState {
   syncQueue: SyncQueueItem[];
   currentUser?: CurrentUser;
   feedbackList?: FeedbackEntry[];
-  paymentHistory?: PaymentEntry[];
   donations?: DonationEntry[];
   settings: {
     locale: SupportedLocale;
@@ -508,18 +499,6 @@ class LocalDatabase {
       id: 'fb_' + Date.now(),
       rating,
       message,
-      date: Date.now(),
-    });
-    this.saveState();
-  }
-
-  public recordPayment(medicineId: string, amount: number = 1) {
-    if (!this.state.paymentHistory) this.state.paymentHistory = [];
-    this.state.paymentHistory.push({
-      id: 'pay_' + Date.now(),
-      medicineId,
-      amount,
-      status: 'paid',
       date: Date.now(),
     });
     this.saveState();

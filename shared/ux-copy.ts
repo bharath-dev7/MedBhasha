@@ -67,11 +67,10 @@ export const uxCopyEn: Record<string, string> = {
   'scan.detailsExtracted': 'Details Extracted',
   'scan.confirm': 'Confirm',
 
-  // Verification & ₹1 Lock
+  // Verification preview
   'verify.title': 'Verification Required',
   'verify.subtitle': 'Some information needs pharmacist verification.',
-  'verify.lockBox': 'Unlock Translation & Verification for ₹1 only',
-  'verify.payCta': 'Pay ₹1',
+  'verify.lockBox': 'Continue to instructions preview',
   'verify.later': 'or Continue Later',
   'verify.badge': 'Verified by Pharmacist',
   'verify.medInfo': 'Medicine Information',
@@ -186,11 +185,10 @@ export const uxCopyTe: Record<string, string> = {
   'scan.detailsExtracted': 'వివరాలు పొందబడ్డాయి',
   'scan.confirm': 'నిర్ధారించండి',
 
-  // Verification & ₹1 Lock
+  // Verification preview
   'verify.title': 'ధృవీకరణ అవసరం',
   'verify.subtitle': 'కొన్ని వివరాలకు ఫార్మసిస్ట్ ధృవీకరణ అవసరం.',
-  'verify.lockBox': '₹1 తో అనువాదం & ఫార్మసిస్ట్ ధృవీకరణ పొందండి',
-  'verify.payCta': '₹1 చెల్లించండి',
+  'verify.lockBox': 'సూచనల ప్రివ్యూకు కొనసాగండి',
   'verify.later': 'లేదా తర్వాత కొనసాగించండి',
   'verify.badge': 'ఫార్మసిస్ట్ ధృవీకరించారు',
   'verify.medInfo': 'మందుల సమాచారం',
@@ -302,8 +300,7 @@ export const uxCopyHi: Record<string, string> = {
   'scan.confirm': 'पुष्टि करें',
   'verify.title': 'सत्यापन आवश्यक है',
   'verify.subtitle': 'कुछ जानकारी को फार्मासिस्ट के सत्यापन की आवश्यकता है।',
-  'verify.lockBox': 'केवल ₹1 में अनुवाद और फार्मासिस्ट सत्यापन अनलॉक करें',
-  'verify.payCta': '₹1 भुगतान करें',
+  'verify.lockBox': 'निर्देश पूर्वावलोकन जारी रखें',
   'verify.later': 'या बाद में जारी रखें',
   'verify.badge': 'फार्मासिस्ट द्वारा सत्यापित',
   'verify.medInfo': 'दवा की जानकारी',
@@ -371,8 +368,7 @@ export const uxCopyTa: Record<string, string> = {
   'scan.confirm': 'உறுதிப்படுத்தவும்',
   'verify.title': 'சரிபார்ப்பு தேவை',
   'verify.subtitle': 'சில தகவல்களுக்கு மருந்தாளுநரின் சரிபார்ப்பு தேவை.',
-  'verify.lockBox': '₹1 செலுத்தி மொழிபெயர்ப்பு & சரிபார்ப்பைத் திறக்கவும்',
-  'verify.payCta': '₹1 செலுத்தவும்',
+  'verify.lockBox': 'அறிவுறுத்தல் முன்னோட்டத்திற்குத் தொடரவும்',
   'verify.later': 'அல்லது பின்னர் தொடரவும்',
   'verify.badge': 'மருந்தாளுநரால் சரிபார்க்கப்பட்டது',
   'verify.medInfo': 'மருந்து தகவல்',
@@ -440,8 +436,7 @@ export const uxCopyKn: Record<string, string> = {
   'scan.confirm': 'ದೃಢೀಕರಿಸಿ',
   'verify.title': 'ಪರಿಶೀಲನೆ ಅಗತ್ಯವಿದೆ',
   'verify.subtitle': 'ಕೆಲವು ಮಾಹಿತಿಗೆ ಫಾರ್ಮಸಿಸ್ಟ್ ಪರಿಶೀಲನೆ ಅಗತ್ಯವಿದೆ.',
-  'verify.lockBox': 'ಕೇವಲ ₹1 ರಲ್ಲಿ ಅನುವಾದ ಮತ್ತು ಪರಿಶೀಲನೆ ಅನ್‌ಲಾಕ್ ಮಾಡಿ',
-  'verify.payCta': '₹1 ಪಾವತಿಸಿ',
+  'verify.lockBox': 'ಸೂಚನೆಗಳ ಪೂರ್ವವೀಕ್ಷಣೆಗೆ ಮುಂದುವರಿಯಿರಿ',
   'verify.later': 'ಅಥವಾ ನಂತರ ಮುಂದುವರಿಯಿರಿ',
   'verify.badge': 'ಫಾರ್ಮಸಿಸ್ಟ್ ಪರಿಶೀಲಿಸಿದ್ದಾರೆ',
   'verify.medInfo': 'ಔಷಧ ಮಾಹಿತಿ',

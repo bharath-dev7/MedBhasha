@@ -5,7 +5,6 @@ import {
   Smartphone,
   Eye,
   ShieldCheck,
-  CreditCard,
   Bell,
   Database,
   Heart,
@@ -28,7 +27,7 @@ export const MedicareArchitecture: React.FC<MedicareArchitectureProps> = ({
   const subsystems = [
     { title: 'OCR & AI Processing', icon: <Eye size={18} />, color: '#2563EB', bg: '#EFF6FF', screen: 'scan_rx' },
     { title: 'Pharmacist Verification', icon: <ShieldCheck size={18} />, color: '#16A34A', bg: '#DCFCE7', screen: 'verification' },
-    { title: 'Payment Gateway (₹1)', icon: <CreditCard size={18} />, color: '#D97706', bg: '#FEF3C7', screen: 'verification' },
+    { title: 'Instructions Preview', icon: <ShieldCheck size={18} />, color: '#0D9488', bg: '#CCFBF1', screen: 'verification' },
     { title: 'Notification Service', icon: <Bell size={18} />, color: '#7C3AED', bg: '#EDE9FE', screen: 'dose_reminder' },
     { title: 'Database & Cloud Sync', icon: <Database size={18} />, color: '#0D9488', bg: '#CCFBF1', screen: 'records' },
   ];
@@ -46,7 +45,7 @@ export const MedicareArchitecture: React.FC<MedicareArchitectureProps> = ({
     { name: '4. Home Dashboard', id: 'home' },
     { name: '5. Prescription Scan', id: 'scan_rx' },
     { name: '6. Medicine Scan', id: 'scan_med' },
-    { name: '7. Pharmacist Verification (₹1)', id: 'verification' },
+    { name: '7. Instructions Preview', id: 'verification' },
     { name: '8. Verified Details', id: 'verified_details' },
     { name: '9. Dose Reminder', id: 'dose_reminder' },
     { name: '10. Expiry Monitoring', id: 'expiry_alert' },

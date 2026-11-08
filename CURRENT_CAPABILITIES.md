@@ -27,7 +27,7 @@ The trust-layer workflow has working API routes and the automated test suite pas
 | Expiry and suspicious-medicine alerts | Sample presentation | Screens display sample expiry and suspicious-medicine cases. The main scan flow does not calculate expiry from a live scan or check authenticity against CDSCO, WHO, or another external catalogue. |
 | Records | Local plus sample records | The records screen combines fixed sample records with medicines in the local browser store. It is not a synchronized patient record system. |
 | Feedback and donation requests | Local demo records | Submissions are saved in browser-local state. The donation centres are sample entries; no external collection service is contacted. |
-| Payments | Simulated and labeled | The ₹1 preview waits briefly and records a local demo-payment entry. It does not connect to UPI, a card processor, or a payment gateway. |
+| Payments | Removed | The prototype no longer presents or records a payment flow. |
 | Voice output | Browser-dependent | The verified-details screen uses the browser Web Speech API when available. Voice availability and pronunciation depend on the browser and installed voices. |
 | Offline support | Browser-local data only | The app stores state in `localStorage` and includes an offline-mode setting. This is not an encrypted offline database, and it does not guarantee background reminders. |
 
@@ -38,7 +38,7 @@ The main shell in [`patient-app/src/App.tsx`](patient-app/src/App.tsx) starts on
 - Account form interactions that save a profile locally; there is no server-side identity or password authentication.
 - A five-language selector and localized sample instruction strings. Most interface screens remain primarily English.
 - Sample prescription and medicine scenarios that navigate into verification and alert screens.
-- A pharmacist verification/payment presentation, where confirming payment is simulated and saved locally.
+- An instructions-preview screen that clearly states no pharmacist review or payment takes place in the demo.
 - Medicine records with sample entries and locally added medicines.
 - A reminder form that saves a local schedule and an alarm modal that can be manually demonstrated.
 - Repeat-day selection affects local dose generation. The snooze preview uses a ten-minute timer only while its screen remains mounted; it is not a background notification.
@@ -70,7 +70,7 @@ The shared modules in `shared/` define the data contracts, demonstration catalog
 
 - **Not suitable for clinical use:** Extraction, medication verification, and instructions require independent professional confirmation.
 - **No production user accounts:** The account screen writes profile details to the browser store only.
-- **No real payments:** The payment interface is a simulation.
+- **No payments:** The former ₹1 demo payment proposal was removed from the patient workflow.
 - **No reliable scheduled notifications:** Reminder saving does not integrate with a mobile operating system or push-notification service.
 - **No durable or encrypted persistence:** Browser state uses `localStorage`; backend state is in-memory.
 - **No real-world medicine authenticity or donation integration:** Catalogue checks and donation submissions are not connected to external services.

@@ -40,15 +40,6 @@ describe('MEDICARE Core System & Safety Specifications', () => {
     expect(state.currentUser?.isLoggedIn).toBe(true);
   });
 
-  it('records ₹1 clinical verification payment in audit state', () => {
-    localDb.recordPayment('Paracetamol 500 mg', 1);
-    const state = localDb.getState();
-    expect(state.paymentHistory).toBeDefined();
-    expect(state.paymentHistory?.length).toBeGreaterThan(0);
-    expect(state.paymentHistory?.[0].amount).toBe(1);
-    expect(state.paymentHistory?.[0].status).toBe('paid');
-  });
-
   it('records unused medicine donation requests with authorized centre details', () => {
     localDb.addDonation(
       'Paracetamol 500 mg',
@@ -69,4 +60,3 @@ describe('MEDICARE Core System & Safety Specifications', () => {
     expect(state.feedbackList?.[0].message).toBe('Excellent medication safety app!');
   });
 });
-

@@ -126,7 +126,7 @@ export const App: React.FC = () => {
     }
   };
 
-  const handlePaymentSuccess = () => {
+  const handleVerificationPreviewContinue = () => {
     setActiveView('verified_details');
   };
 
@@ -142,7 +142,7 @@ export const App: React.FC = () => {
     { id: 'home', label: '4. Home Dashboard' },
     { id: 'scan_rx', label: '5. Prescription Scan' },
     { id: 'scan_med', label: '6. Medicine Scan' },
-    { id: 'verification', label: '7. Pharmacist Verification (₹1)' },
+    { id: 'verification', label: '7. Instructions Preview' },
     { id: 'verified_details', label: '8. Verified Details' },
     { id: 'dose_reminder', label: '9. Dose Reminder' },
     { id: 'expiry_alert', label: '10. Expiry Alert' },
@@ -291,8 +291,7 @@ export const App: React.FC = () => {
               {activeView === 'verification' && (
                 <MedicareVerification
                   onBack={() => setActiveView('home')}
-                  onPaymentSuccess={handlePaymentSuccess}
-                  onContinueLater={() => setActiveView('home')}
+                  onContinue={handleVerificationPreviewContinue}
                   medicineName={activeMedicineName}
                 />
               )}
